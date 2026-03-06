@@ -2,37 +2,65 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Observation Practice Log</title>
 <style>
-  body { font-family: monospace; background: #1a1a2e; color: #f5f0e8; padding: 40px; }
+  body { font-family: monospace; background: #1a1a2e; color: #f5f0e8; padding: 20px; margin: 0; }
   .container { max-width: 700px; margin: 0 auto; }
-  h1 { color: #c94b2e; font-size: 14px; letter-spacing: 3px; text-transform: uppercase; }
-  .controls { background: #252540; padding: 20px; border-radius: 8px; margin: 20px 0; display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; }
-  label { font-size: 11px; color: #8a7f72; display: block; margin-bottom: 4px; }
-  input { background: #1a1a2e; border: 1px solid #3a3a5c; color: #f5f0e8; padding: 8px; font-family: monospace; border-radius: 4px; font-size: 14px; }
-  .paper { background: #f5f0e8; color: #1a1a2e; padding: 40px; border-radius: 2px; box-shadow: 6px 6px 0 #07070f; }
-  .paper h2 { font-size: 22px; margin-bottom: 24px; }
-  .section { margin-bottom: 20px; }
+  h1 { color: #c94b2e; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 4px; }
+  .subtitle { font-size: 11px; color: #4a4a6a; margin-bottom: 16px; }
+  .controls { background: #252540; padding: 16px; border-radius: 8px; margin-bottom: 16px; display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end; }
+  label { font-size: 10px; color: #8a7f72; display: block; margin-bottom: 4px; letter-spacing: 1px; text-transform: uppercase; }
+  input[type="number"], input[type="text"], input[type="password"] { background: #1a1a2e; border: 1px solid #3a3a5c; color: #f5f0e8; padding: 8px; font-family: monospace; border-radius: 4px; font-size: 14px; outline: none; }
+  input:focus { border-color: #c94b2e; }
+  .paper { background: #f5f0e8; color: #1a1a2e; padding: 30px; border-radius: 2px; box-shadow: 6px 6px 0 #07070f; }
+  .paper h2 { font-size: 20px; margin-bottom: 20px; line-height: 1.3; }
+  .section { margin-bottom: 18px; }
   .section-label { font-size: 10px; letter-spacing: 2px; color: #8a7f72; text-transform: uppercase; margin-bottom: 6px; border-bottom: 1px solid #d4cfc5; padding-bottom: 4px; }
-  textarea { width: 100%; background: transparent; border: none; resize: none; font-family: monospace; font-size: 15px; color: #1a1a2e; outline: none; min-height: 40px; }
-  .fact-row { display: flex; gap: 8px; }
-  .num { color: #c94b2e; font-weight: bold; min-width: 20px; padding-top: 2px; }
-  .btn { background: #c94b2e; color: white; border: none; padding: 9px 20px; font-family: monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; border-radius: 4px; }
+  textarea { width: 100%; background: transparent; border: none; resize: none; font-family: monospace; font-size: 14px; color: #1a1a2e; outline: none; min-height: 36px; box-sizing: border-box; }
+  .fact-row { display: flex; gap: 8px; align-items: flex-start; }
+  .num { color: #c94b2e; font-weight: bold; min-width: 20px; padding-top: 4px; font-size: 13px; }
+  .btn { color: white; border: none; padding: 10px 18px; font-family: monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; border-radius: 4px; transition: opacity 0.2s; }
+  .btn:hover { opacity: 0.85; }
+  .btn-save { background: #c94b2e; }
+  .btn-copy { background: #3a3a5c; }
   .btn-clear { background: transparent; border: 1px solid #3a3a5c; color: #8a7f72; }
-  .footer { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding-top: 16px; border-top: 1px dashed #d4cfc5; }
-  .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #4caf76; color: white; padding: 10px 24px; border-radius: 4px; font-family: monospace; font-size: 12px; display: none; }
+  .footer { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; padding-top: 14px; border-top: 1px dashed #d4cfc5; flex-wrap: wrap; gap: 8px; }
+  .stamp { font-size: 11px; color: #8a7f72; }
+  .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); padding: 10px 24px; border-radius: 4px; font-family: monospace; font-size: 12px; display: none; z-index: 999; color: white; text-align: center; min-width: 220px; }
+  .toast.success { background: #4caf76; }
+  .toast.error { background: #c94b2e; }
+  .toast.loading { background: #3a3a5c; }
+  .history { margin-top: 20px; background: #252540; border-radius: 8px; padding: 16px; }
+  .history h3 { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: #8a7f72; margin-bottom: 12px; }
+  .history-item { background: #1a1a2e; border-radius: 4px; padding: 10px 14px; margin-bottom: 8px; cursor: pointer; border-left: 3px solid #3a3a5c; transition: border-color 0.2s; }
+  .history-item:hover { border-left-color: #c94b2e; }
+  .history-item .hi-title { font-size: 13px; color: #f5f0e8; margin-bottom: 2px; }
+  .history-item .hi-date { font-size: 10px; color: #4a4a6a; }
+  .empty-history { font-size: 12px; color: #4a4a6a; font-style: italic; }
+  .token-section { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 200px; }
+  .token-row { display: flex; gap: 6px; align-items: center; }
+  .token-status { font-size: 10px; color: #4caf76; }
+  .token-status.no { color: #c94b2e; }
 </style>
 </head>
 <body>
 <div class="container">
-  <h1>Observation Practice — Daily Log</h1>
+  <h1>Observation Practice</h1>
+  <p class="subtitle">daily log — auto-saves to GitHub</p>
   <div class="controls">
-    <div><label>Day #</label><input type="number" id="dayNum" value="1" style="width:70px" oninput="updateHeading()"></div>
-    <div><label>Location</label><input type="text" id="location" value="College Canteen" style="width:220px" oninput="updateHeading()"></div>
-    <button class="btn" onclick="clearAll()">↻ New Day</button>
+    <div><label>Day #</label><input type="number" id="dayNum" value="4" style="width:65px" oninput="updateHeading()"></div>
+    <div><label>Location</label><input type="text" id="location" placeholder="e.g. College Canteen" style="width:180px" oninput="updateHeading()"></div>
+    <div class="token-section">
+      <label>GitHub Token <span class="token-status no" id="tokenStatus">● not set</span></label>
+      <div class="token-row">
+        <input type="password" id="ghToken" placeholder="ghp_..." style="width:160px" oninput="saveToken()">
+      </div>
+    </div>
   </div>
   <div class="paper">
-    <h2 id="heading">Observation Practice - Day 001 - College Canteen</h2>
+    <h2 id="heading">Observation Practice - Day 004 - </h2>
     <div class="section"><div class="section-label">Scene Description</div><textarea id="scene" rows="2" placeholder="Where were you? Time? Setting?"></textarea></div>
     <div class="section"><div class="section-label">3 Facts</div>
       <div class="fact-row"><span class="num">1.</span><textarea id="f1" rows="1" placeholder="Observation..."></textarea></div>
@@ -45,45 +73,37 @@
     <div class="section"><div class="section-label">1 Prediction</div><textarea id="prediction" rows="1" placeholder="What do you think will happen next?"></textarea></div>
     <div class="section"><div class="section-label">Reflection</div><textarea id="reflection" rows="2" placeholder="Fill after the event — what did you learn?"></textarea></div>
     <div class="footer">
-      <span style="font-size:11px;color:#8a7f72" id="stamp">DAY 001</span>
-      <div style="display:flex;gap:8px">
-        <button class="btn" onclick="copyMD()">Copy as Markdown</button>
+      <span class="stamp" id="stamp">DAY 004</span>
+      <div class="btn-group">
+        <button class="btn btn-save" onclick="saveToGitHub()">⬆ Save to GitHub</button>
+        <button class="btn btn-copy" onclick="copyMD()">Copy MD</button>
         <button class="btn btn-clear" onclick="clearAll()">Clear</button>
       </div>
     </div>
   </div>
+  <div class="history">
+    <h3>Saved Entries</h3>
+    <div id="historyList"><p class="empty-history">No entries saved yet.</p></div>
+  </div>
 </div>
-<div class="toast" id="toast">Copied to clipboard ✓</div>
+<div class="toast" id="toast"></div>
 <script>
+const OWNER='jatothubichu12-cpu';
+const REPO='analytical-observation-training';
+const BRANCH='main';
 function pad(n){return String(n).padStart(3,'0');}
-function updateHeading(){
-  var n=parseInt(document.getElementById('dayNum').value)||1;
-  var l=document.getElementById('location').value||'Location';
-  document.getElementById('heading').textContent='Observation Practice - Day '+pad(n)+' - '+l;
-  document.getElementById('stamp').textContent='DAY '+pad(n);
-}
-function clearAll(){
-  ['scene','f1','f2','f3','unusual','story','emotion','prediction','reflection'].forEach(function(id){document.getElementById(id).value='';});
-  var n=parseInt(document.getElementById('dayNum').value)||1;
-  document.getElementById('dayNum').value=n+1;
-  updateHeading();
-}
-function copyMD(){
-  var n=parseInt(document.getElementById('dayNum').value)||1;
-  var l=document.getElementById('location').value||'Location';
-  var md='# Observation Practice - Day '+pad(n)+' - '+l+'\n\n'+
-    '## Scene Description\n'+(document.getElementById('scene').value||'[Fill in]')+'\n\n'+
-    '## 3 Facts\n1. '+(document.getElementById('f1').value||'[Fill in]')+'\n2. '+(document.getElementById('f2').value||'[Fill in]')+'\n3. '+(document.getElementById('f3').value||'[Fill in]')+'\n\n'+
-    '## 1 Unusual Thing\n- '+(document.getElementById('unusual').value||'[Fill in]')+'\n\n'+
-    '## 1 Possible Story\n- '+(document.getElementById('story').value||'[Fill in]')+'\n\n'+
-    '## 1 Hidden Emotion\n- '+(document.getElementById('emotion').value||'[Fill in]')+'\n\n'+
-    '## 1 Prediction\n- '+(document.getElementById('prediction').value||'[Fill in]')+'\n\n'+
-    '## Reflection\n'+(document.getElementById('reflection').value||'[Fill this after the event]');
-  navigator.clipboard.writeText(md);
-  var t=document.getElementById('toast');
-  t.style.display='block';
-  setTimeout(function(){t.style.display='none';},2500);
-}
+function updateHeading(){var n=parseInt(document.getElementById('dayNum').value)||1;var l=document.getElementById('location').value||'';document.getElementById('heading').textContent='Observation Practice - Day '+pad(n)+(l?' - '+l:'');document.getElementById('stamp').textContent='DAY '+pad(n);}
+function saveToken(){var t=document.getElementById('ghToken').value.trim();if(t){localStorage.setItem('gh_token',t);document.getElementById('tokenStatus').textContent='● set';document.getElementById('tokenStatus').className='token-status';}}
+function loadToken(){var t=localStorage.getItem('gh_token');if(t){document.getElementById('ghToken').value=t;document.getElementById('tokenStatus').textContent='● set';document.getElementById('tokenStatus').className='token-status';}}
+function getMarkdown(){var n=parseInt(document.getElementById('dayNum').value)||1;var l=document.getElementById('location').value||'Location';return '# Observation Practice - Day '+pad(n)+' - '+l+'\n\n'+'## Scene Description\n'+(document.getElementById('scene').value||'[Fill in]')+'\n\n'+'## 3 Facts\n1. '+(document.getElementById('f1').value||'[Fill in]')+'\n2. '+(document.getElementById('f2').value||'[Fill in]')+'\n3. '+(document.getElementById('f3').value||'[Fill in]')+'\n\n'+'## 1 Unusual Thing\n- '+(document.getElementById('unusual').value||'[Fill in]')+'\n\n'+'## 1 Possible Story\n- '+(document.getElementById('story').value||'[Fill in]')+'\n\n'+'## 1 Hidden Emotion\n- '+(document.getElementById('emotion').value||'[Fill in]')+'\n\n'+'## 1 Prediction\n- '+(document.getElementById('prediction').value||'[Fill in]')+'\n\n'+'## Reflection\n'+(document.getElementById('reflection').value||'[Fill this after the event]');}
+function showToast(msg,type){var t=document.getElementById('toast');t.textContent=msg;t.className='toast '+type;t.style.display='block';if(type!=='loading')setTimeout(function(){t.style.display='none';},3000);}
+async function saveToGitHub(){var token=localStorage.getItem('gh_token')||document.getElementById('ghToken').value.trim();if(!token){showToast('Please enter your GitHub token first!','error');return;}var n=parseInt(document.getElementById('dayNum').value)||1;var filename='day_'+pad(n)+'.md';var path='daily-log/'+filename;var content=getMarkdown();var encoded=btoa(unescape(encodeURIComponent(content)));showToast('Saving to GitHub...','loading');try{var sha=null;try{var check=await fetch('https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/'+path,{headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}});if(check.ok){var existing=await check.json();sha=existing.sha;}}catch(e){}var body={message:'Day '+pad(n)+' - '+(document.getElementById('location').value||'Observation'),content:encoded,branch:BRANCH};if(sha)body.sha=sha;var res=await fetch('https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/'+path,{method:'PUT',headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});if(res.ok){showToast('✓ Saved to GitHub as '+filename,'success');saveToHistory(n,document.getElementById('location').value,content);loadHistory();}else{var err=await res.json();showToast('Error: '+(err.message||'Failed'),'error');}}catch(e){showToast('Network error — check connection','error');}}
+function saveToHistory(day,location,content){var history=JSON.parse(localStorage.getItem('obs_history')||'[]');var existing=history.findIndex(function(h){return h.day===day;});var entry={day:day,location:location,date:new Date().toLocaleDateString(),content:content};if(existing>=0)history[existing]=entry;else history.unshift(entry);localStorage.setItem('obs_history',JSON.stringify(history));}
+function loadHistory(){var history=JSON.parse(localStorage.getItem('obs_history')||'[]');var el=document.getElementById('historyList');if(!history.length){el.innerHTML='<p class="empty-history">No entries saved yet.</p>';return;}el.innerHTML=history.map(function(h){return '<div class="history-item" onclick="loadEntry('+h.day+')">'+'<div class="hi-title">Day '+pad(h.day)+(h.location?' — '+h.location:'')+'</div>'+'<div class="hi-date">'+h.date+'</div></div>';}).join('');}
+function loadEntry(day){var history=JSON.parse(localStorage.getItem('obs_history')||'[]');var entry=history.find(function(h){return h.day===day;});if(!entry)return;document.getElementById('dayNum').value=day;document.getElementById('location').value=entry.location;updateHeading();showToast('Loaded Day '+pad(day),'success');}
+function copyMD(){navigator.clipboard.writeText(getMarkdown());showToast('Copied to clipboard!','success');}
+function clearAll(){['scene','f1','f2','f3','unusual','story','emotion','prediction','reflection'].forEach(function(id){document.getElementById(id).value='';});var n=parseInt(document.getElementById('dayNum').value)||1;document.getElementById('dayNum').value=n+1;document.getElementById('location').value='';updateHeading();}
+loadToken();loadHistory();updateHeading();
 </script>
 </body>
 </html>
