@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Observation Practice Log</title>
+<style>
+  body { font-family: monospace; background: #1a1a2e; color: #f5f0e8; padding: 40px; }
+  .container { max-width: 700px; margin: 0 auto; }
+  h1 { color: #c94b2e; font-size: 14px; letter-spacing: 3px; text-transform: uppercase; }
+  .controls { background: #252540; padding: 20px; border-radius: 8px; margin: 20px 0; display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-end; }
+  label { font-size: 11px; color: #8a7f72; display: block; margin-bottom: 4px; }
+  input { background: #1a1a2e; border: 1px solid #3a3a5c; color: #f5f0e8; padding: 8px; font-family: monospace; border-radius: 4px; font-size: 14px; }
+  .paper { background: #f5f0e8; color: #1a1a2e; padding: 40px; border-radius: 2px; box-shadow: 6px 6px 0 #07070f; }
+  .paper h2 { font-size: 22px; margin-bottom: 24px; }
+  .section { margin-bottom: 20px; }
+  .section-label { font-size: 10px; letter-spacing: 2px; color: #8a7f72; text-transform: uppercase; margin-bottom: 6px; border-bottom: 1px solid #d4cfc5; padding-bottom: 4px; }
+  textarea { width: 100%; background: transparent; border: none; resize: none; font-family: monospace; font-size: 15px; color: #1a1a2e; outline: none; min-height: 40px; }
+  .fact-row { display: flex; gap: 8px; }
+  .num { color: #c94b2e; font-weight: bold; min-width: 20px; padding-top: 2px; }
+  .btn { background: #c94b2e; color: white; border: none; padding: 9px 20px; font-family: monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; border-radius: 4px; }
+  .btn-clear { background: transparent; border: 1px solid #3a3a5c; color: #8a7f72; }
+  .footer { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding-top: 16px; border-top: 1px dashed #d4cfc5; }
+  .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #4caf76; color: white; padding: 10px 24px; border-radius: 4px; font-family: monospace; font-size: 12px; display: none; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Observation Practice — Daily Log</h1>
+  <div class="controls">
+    <div><label>Day #</label><input type="number" id="dayNum" value="1" style="width:70px" oninput="updateHeading()"></div>
+    <div><label>Location</label><input type="text" id="location" value="College Canteen" style="width:220px" oninput="updateHeading()"></div>
+    <button class="btn" onclick="clearAll()">↻ New Day</button>
+  </div>
+  <div class="paper">
+    <h2 id="heading">Observation Practice - Day 001 - College Canteen</h2>
+    <div class="section"><div class="section-label">Scene Description</div><textarea id="scene" rows="2" placeholder="Where were you? Time? Setting?"></textarea></div>
+    <div class="section"><div class="section-label">3 Facts</div>
+      <div class="fact-row"><span class="num">1.</span><textarea id="f1" rows="1" placeholder="Observation..."></textarea></div>
+      <div class="fact-row"><span class="num">2.</span><textarea id="f2" rows="1" placeholder="Observation..."></textarea></div>
+      <div class="fact-row"><span class="num">3.</span><textarea id="f3" rows="1" placeholder="Observation..."></textarea></div>
+    </div>
+    <div class="section"><div class="section-label">1 Unusual Thing</div><textarea id="unusual" rows="2" placeholder="Something that stood out..."></textarea></div>
+    <div class="section"><div class="section-label">1 Possible Story</div><textarea id="story" rows="2" placeholder="What might be going on beneath the surface?"></textarea></div>
+    <div class="section"><div class="section-label">1 Hidden Emotion</div><textarea id="emotion" rows="1" placeholder="Emotion you sensed but wasn't shown openly..."></textarea></div>
+    <div class="section"><div class="section-label">1 Prediction</div><textarea id="prediction" rows="1" placeholder="What do you think will happen next?"></textarea></div>
+    <div class="section"><div class="section-label">Reflection</div><textarea id="reflection" rows="2" placeholder="Fill after the event — what did you learn?"></textarea></div>
+    <div class="footer">
+      <span style="font-size:11px;color:#8a7f72" id="stamp">DAY 001</span>
+      <div style="display:flex;gap:8px">
+        <button class="btn" onclick="copyMD()">Copy as Markdown</button>
+        <button class="btn btn-clear" onclick="clearAll()">Clear</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast">Copied to clipboard ✓</div>
+<script>
+function pad(n){return String(n).padStart(3,'0');}
+function updateHeading(){
+  var n=parseInt(document.getElementById('dayNum').value)||1;
+  var l=document.getElementById('location').value||'Location';
+  document.getElementById('heading').textContent='Observation Practice - Day '+pad(n)+' - '+l;
+  document.getElementById('stamp').textContent='DAY '+pad(n);
+}
+function clearAll(){
+  ['scene','f1','f2','f3','unusual','story','emotion','prediction','reflection'].forEach(function(id){document.getElementById(id).value='';});
+  var n=parseInt(document.getElementById('dayNum').value)||1;
+  document.getElementById('dayNum').value=n+1;
+  updateHeading();
+}
+function copyMD(){
+  var n=parseInt(document.getElementById('dayNum').value)||1;
+  var l=document.getElementById('location').value||'Location';
+  var md='# Observation Practice - Day '+pad(n)+' - '+l+'\n\n'+
+    '## Scene Description\n'+(document.getElementById('scene').value||'[Fill in]')+'\n\n'+
+    '## 3 Facts\n1. '+(document.getElementById('f1').value||'[Fill in]')+'\n2. '+(document.getElementById('f2').value||'[Fill in]')+'\n3. '+(document.getElementById('f3').value||'[Fill in]')+'\n\n'+
+    '## 1 Unusual Thing\n- '+(document.getElementById('unusual').value||'[Fill in]')+'\n\n'+
+    '## 1 Possible Story\n- '+(document.getElementById('story').value||'[Fill in]')+'\n\n'+
+    '## 1 Hidden Emotion\n- '+(document.getElementById('emotion').value||'[Fill in]')+'\n\n'+
+    '## 1 Prediction\n- '+(document.getElementById('prediction').value||'[Fill in]')+'\n\n'+
+    '## Reflection\n'+(document.getElementById('reflection').value||'[Fill this after the event]');
+  navigator.clipboard.writeText(md);
+  var t=document.getElementById('toast');
+  t.style.display='block';
+  setTimeout(function(){t.style.display='none';},2500);
+}
+</script>
+</body>
+</html>
