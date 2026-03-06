@@ -1,22 +1,35 @@
 # Analytical Observation Training
 
-Goal: Build structured thinking, emotional intelligence, and pattern recognition.
+A daily practice to sharpen observation, pattern recognition, and analytical thinking.
 
-Method: Daily observation using 5-point framework:
-3 Facts, 1 Unusual, 1 Story, 1 Emotion, 1 Prediction
+## Quick Links
 
-Duration: 90-day program
+- [Open Observation Log Form](https://jatothubichu12-cpu.github.io/analytical-observation-training/daily-log/observation-log.html) — Fill and copy your daily entry
 
-Background: B.Tech AIML student applying human behavior analysis
-to strengthen pattern recognition and situational intelligence.
+## Folder Structure
 
-Folder Structure:
-- theory/        Core concepts
-- practice/      Scene examples
-- daily-log/     Daily entries
-- growth-notes/  Weekly reflections
+- `daily-log/` — Daily observation entries
+- `growth-notes/` — Progress and insights
+- `practice/` — Practice exercises
+- `theory/` — Theory and concepts
 
-Progress Tracker:
-- Day 1 to 30   Basic observation
-- Day 31 to 60  Emotion and pattern analysis
-- Day 61 to 90  Prediction accuracy
+## Daily Workflow
+
+1. Open the Observation Log Form above
+2. Fill in your observations
+3. Click **Copy as Markdown**
+4. Run in terminal:
+```bash
+pbpaste > daily-log/day_00X.md
+git add daily-log/day_00X.md
+git commit -m "Day 00X - Location"
+git push
+```
+
+## Progress
+
+| Day | Location | Date |
+|-----|----------|------|
+| 001 | College Canteen | Mar 2026 |
+| 002 | - | Mar 2026 |
+| 003 | Bawarchi | Mar 2026 |
